@@ -187,7 +187,7 @@ resource "kubernetes_deployment" "nginx" {
 }
 # Тестовое задание Two Services to expose each NGINX Deployment., но по факту:
   
-#   1. Если сделать ДВА отдельных сервиса (red-svc и blue-svc), то:
+#   1. Если сделать ДВА отдельных сервиса , то:
 #      Ingress НЕ УМЕЕТ балансить между разными сервисами в одном правиле
 #       Нужно городить upstream, конфигмапы, кастомные конфиги nginx
 
@@ -198,8 +198,8 @@ resource "kubernetes_deployment" "nginx" {
 #       Ingress просто проксирует в этот один сервис
 #          F5 на странице переключает red/blue как и просили
   
-#   ПОЧЕМУ Я ПРАВ:
-#    По факту round-robin ЕСТЬ (между подами, а не сервисами)
+#   ПОЧЕМУ ?:
+#    По факту round-robin ЕСТЬ (  между подами, а не сервисами)
 #     Архитектура проще и надежнее
 # 5. Service
 resource "kubernetes_service" "nginx" {
