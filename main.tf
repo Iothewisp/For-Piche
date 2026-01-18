@@ -42,7 +42,7 @@ resource "kubernetes_config_map" "html_content" {
 <head><meta charset="UTF-8"><title>HARKONNEN APPROVES</title></head>
 <body style='background:#4a0000; color:#ffcc00; text-align:center; padding-top:50px; font-family:serif;' onclick="playAudio()">
   <audio id="m" loop><source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" type="audio/mpeg"></audio>
-  <div id="status" style="color: #ff4400; font-weight: bold; margin-bottom: 20px; font-family: monospace;">[ СИСТЕМА ПРИОСТАНОВЛЕНА: НАЖМИ ДЛЯ СВЯЗИ С ПАДИШАХОМ ]</div>
+  <div id="status" style="color: #ff4400; font-weight: bold; margin-bottom: 20px; font-family: monospace;">[ SYSTEM SUSPENDED: CLICK TO CONTACT THE PADISHAH ]</div>
   <pre style='display:inline-block; text-align:left; font-size:10px; line-height:1.1; font-weight:bold; color:#ff4400; text-shadow: 0 0 5px #ff0000;'>
 .______       _______  _______            __    __    ______   .___________.         .__   __.   _______  __  .__   __. ___   ___ 
 |   _  \     |   ____||       \          |  |  |  |  /  __  \  |           |         |  \ |  |  /  _____||  | |  \ |  | \  \ /  / 
@@ -56,7 +56,7 @@ resource "kubernetes_config_map" "html_content" {
     function playAudio() {
       var audio = document.getElementById('m');
       audio.play().then(() => {
-        document.getElementById('status').innerHTML = "[ СВЯЗЬ УСТАНОВЛЕНА: ГОЛОС ПУСТЫНИ ]";
+        document.getElementById('status').innerHTML = "[ CONNECTION ESTABLISHED: VOICE OF THE DESERT ]";
         document.getElementById('status').style.color = "#00ff00";
       }).catch(e => console.log("Нужен клик"));
     }
@@ -71,7 +71,7 @@ EOT
 <head><meta charset="UTF-8"><title>LOST IN THE BLUE</title></head>
 <body style='background:#001a33; color:#00f2ff; text-align:center; padding-top:50px; font-family:serif;' onclick="playAudio()">
   <audio id="m" loop><source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-2.mp3" type="audio/mpeg"></audio>
-  <div id="status" style="color: #00f2ff; font-weight: bold; margin-bottom: 20px; font-family: monospace;">[ ОЖИДАНИЕ СИГНАЛА ГИЛЬДИИ: КЛИКНИТЕ ]</div>
+  <div id="status" style="color: #00f2ff; font-weight: bold; margin-bottom: 20px; font-family: monospace;">[ AWAITING GUILD SIGNAL: CLICK TO ACTIVATE ]</div>
   <pre style='display:inline-block; text-align:left; font-size:10px; line-height:1.1; font-weight:bold; text-shadow: 0 0 10px #00f2ff;'>
   ____    _        _    _   ______                           _   _    _____   _____   _   _  __   __                     
  |  _ \  | |      | |  | | |  ____|                         | \ | |  / ____| |_   _| | \ | | \ \ / /                     
@@ -90,7 +90,7 @@ EOT
     function playAudio() {
       var audio = document.getElementById('m');
       audio.play().then(() => {
-        document.getElementById('status').innerHTML = "[ ПРЯМАЯ ТРАНСЛЯЦИЯ ИЗ ГИЛЬДИИ ]";
+        document.getElementById('status').innerHTML = "[ LIVE TRANSMISSION FROM THE GUILD  ]";
         document.getElementById('status').style.color = "#00ff00";
       }).catch(e => console.log("Нужен клик"));
     }
@@ -185,22 +185,22 @@ resource "kubernetes_deployment" "nginx" {
     }
   }
 }
-# Тестовое задание Two Services to expose each NGINX Deployment., но по факту:
-  
-#   1. Если сделать ДВА отдельных сервиса , то:
-#      Ingress НЕ УМЕЕТ балансить между разными сервисами в одном правиле
-#       Нужно городить upstream, конфигмапы, кастомные конфиги nginx
-
-  
-#   2. Если сделать ОДИН сервис (как у меня), то:
-#       Сервис сам балансирует между всными подами (red + blue)
-#      Round-robin работает из коробки через kube-proxy
-#       Ingress просто проксирует в этот один сервис
-#          F5 на странице переключает red/blue как и просили
-  
-#   ПОЧЕМУ ?:
-#    По факту round-robin ЕСТЬ (  между подами, а не сервисами)
-#     Архитектура проще и надежнее
+# Test task: Two Services to expose each NGINX Deployment.
+# But in practice:
+#
+#   1. If we create TWO separate services (red-svc and blue-svc):
+#      Ingress CANNOT balance between different services in one rule
+#      Need to create upstreams, configmaps, custom nginx configs
+#
+#   2. If we create ONE service (as I did):
+#      Service balances between all pods (red + blue)
+#      Round-robin works out of the box via kube-proxy
+#      Ingress just proxies to this single service
+#      F5 on page switches red/blue as requested
+#
+#   WHY I'M RIGHT:
+#    Round-robin EXISTS (between pods, not services)
+#    Architecture is simpler and more reliable
 # 5. Service
 resource "kubernetes_service" "nginx" {
   metadata {
