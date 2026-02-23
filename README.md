@@ -1,4 +1,4 @@
-# For-Piche
+# SOme Delusional playground 
 📘 Test Task Description: Deploy Two NGINX Pods and Ingress with Load Balancing
 🎯 Objective
 Create a Terraform configuration that deploys the following to a Kubernetes cluster:
